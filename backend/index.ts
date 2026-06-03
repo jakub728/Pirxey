@@ -4,11 +4,14 @@ import express, {
   type NextFunction,
 } from "express";
 import { ZodError } from "zod";
+import { dbConnect } from "./utils/dbConnect.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 
 app.use(express.json());
+
+await dbConnect();
 
 //! GLOBAL ERROR HANDLER
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
