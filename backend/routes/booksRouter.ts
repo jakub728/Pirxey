@@ -9,31 +9,30 @@ import { z } from "zod";
 
 const router = express.Router();
 
-router.get(
-  "/all",
-  async (err: any, req: Request, res: Response, next: NextFunction) => {
-    try {
-      const allBooks = await BookModel.find();
+// http://localhost:3000/books//all
+router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const allBooks = await BookModel.find();
 
-      res.status(200).json(allBooks);
-    } catch (error) {
-      console.error();
-      next({ status: 400, message: err.message });
-    }
-  },
-);
+    res.status(200).json(allBooks);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
 
+// http://localhost:3000/books/add
 router.post(
   "/add",
   validate(BookSchema),
-  async (err: any, req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const newBook = await BookModel.create(req.body);
 
-      res.status(201).json(`Book ${newBook.title} was added`);
+      res.status(201).json(newBook);
     } catch (error) {
-      console.error();
-      next({ status: 400, message: err.message });
+      console.error(error);
+      next(error);
     }
   },
 );
@@ -42,9 +41,10 @@ const SearchQuerySchema = z.object({
   title: z.string().min(1, "Search title cannot be empty"),
 });
 
+// http://localhost:3000/books/search/?title=...
 router.get(
   "/search",
-  async (err: any, req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const validatedQuery = await SearchQuerySchema.parseAsync(req.query);
 

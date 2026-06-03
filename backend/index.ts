@@ -6,6 +6,7 @@ import express, {
 import { ZodError } from "zod";
 import { dbConnect } from "./utils/dbConnect.js";
 import booksRouter from "./routes/booksRouter.js";
+import cors from "cors";
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +15,7 @@ app.use(express.json());
 
 await dbConnect();
 
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use("/books", booksRouter);
 
 //! GLOBAL ERROR HANDLER
