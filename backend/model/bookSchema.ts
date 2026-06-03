@@ -12,6 +12,11 @@ export const BookSchema = z.object({
     .max(5, "Rating cannot exceed 5"),
 });
 
+export const BookSearchQuerySchema = z.object({
+  title: z.string().optional(),
+  author: z.string().optional(),
+});
+
 export type BookInput = z.infer<typeof BookSchema>;
 
 const mongooseBookSchema = new Schema<BookInput>({

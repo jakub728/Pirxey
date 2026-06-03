@@ -16,3 +16,8 @@ export interface AddBook {
   pages: number;
   rating: number;
 }
+
+export interface SearchBarProps {
+  onSearch: (filters: { title: string; author: string }) => void;
+}
+
