@@ -60,12 +60,10 @@ export default function AddBook() {
       </form>
 
       {error && (
-        <div style={{ color: "red", marginTop: "10px" }}>
-          <p>
-            <strong>{generalMessage || "Something went wrong"}</strong>
-          </p>
-          <ul>
-            {validationErrors?.map((err: any, index: number) => (
+        <div className="error-msg">
+          <strong>{generalMessage || "Something went wrong"}</strong>
+          <ul style={{ paddingLeft: "20px", margin: "5px 0 0" }}>
+            {validationErrors?.map((err, index) => (
               <li key={index}>
                 {err.field}: {err.message}
               </li>
@@ -75,8 +73,8 @@ export default function AddBook() {
       )}
 
       {isSuccess && data && (
-        <p style={{ color: "green", marginTop: "10px" }}>
-          Book added: {data.title}
+        <p className="success-msg">
+          Book added: <strong>{data.title}</strong>
         </p>
       )}
     </div>
