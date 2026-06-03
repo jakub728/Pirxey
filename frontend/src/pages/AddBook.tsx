@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { baseURL } from "../api/axios.js";
 import { type AddBook, type Book } from "../types/books.js";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { BookSchema } from "../utils/zod.js";
 
 export default function AddBook() {
   const queryClient = useQueryClient();
@@ -16,44 +18,56 @@ export default function AddBook() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const {
+    register,
+    handleSubmit: handleFormSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<AddBook>({
+    resolver: zodResolver(BookSchema),
+  });
 
-    const bookData: AddBook = {
-      title: formData.get("title") as string,
-      author: formData.get("author") as string,
-      ISBN: Number(formData.get("ISBN")),
-      pages: Number(formData.get("pages")),
-      rating: Number(formData.get("rating")),
-    };
-
-    mutate(bookData);
-    e.currentTarget.reset();
+  const onSubmit = (formData: AddBook) => {
+    mutate(formData);
+    reset();
   };
-
   const backendError = error as any;
-  const validationErrors = backendError?.response?.data?.errors;
   const generalMessage = backendError?.response?.data?.message;
+  const validationErrors = backendError?.response?.data?.errors;
 
   return (
     <div className="addbook-wrapper">
       <h1>Add book</h1>
-      <form onSubmit={handleSubmit} className="addbook-form">
+      <form onSubmit={handleFormSubmit(onSubmit)} className="addbook-form">
         <label>Title</label>
-        <input type="text" name="title" required />
+
+        <input type="text" {...register("title")} />
+        {errors.title && <p style={{ color: "red" }}>{errors.title.message}</p>}
 
         <label>Author</label>
-        <input type="text" name="author" required />
+        <input type="text" {...register("author")} />
+        {errors.author && (
+          <p style={{ color: "red" }}>{errors.author.message}</p>
+        )}
 
         <label>ISBN Number</label>
-        <input type="number" name="ISBN" required />
+        <input type="number" {...register("ISBN", { valueAsNumber: true })} />
+        {errors.ISBN && <p style={{ color: "red" }}>{errors.ISBN.message}</p>}
 
         <label>Number of pages</label>
-        <input type="number" name="pages" required />
+        <input type="number" {...register("pages", { valueAsNumber: true })} />
+        {errors.pages && <p style={{ color: "red" }}>{errors.pages.message}</p>}
 
         <label>Rating</label>
-        <input type="number" name="rating" min={1} max={5} required />
+        <input
+          type="number"
+          min={1}
+          max={5}
+          {...register("rating", { valueAsNumber: true })}
+        />
+        {errors.rating && (
+          <p style={{ color: "red" }}>{errors.rating.message}</p>
+        )}
 
         <button type="submit" disabled={isPending}>
           {isPending ? "Adding.." : "Add"}
