@@ -60,18 +60,6 @@ _Open the provided local URL (usually `http://localhost:5173`) in your web brows
 
 ---
 
-## 🚀 Scripts Reference
-
-### Backend Scripts (`/backend`)
-
-- `npm run dev` - Launches the local development server using `tsx`.
-
-### Frontend Scripts (`/frontend`)
-
-- `npm run dev` - Starts the Vite development server with Hot Module Replacement (HMR).
-
----
-
 ## 📝 Project Features Implemented
 
 - **Robust Global Validation**: Integrated client and server-side validation powered by **Zod**.
