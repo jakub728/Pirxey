@@ -5,6 +5,7 @@ import express, {
 } from "express";
 import { ZodError } from "zod";
 import { dbConnect } from "./utils/dbConnect.js";
+import booksRouter from "./routes/booksRouter.js";
 
 const app = express();
 const PORT = 3000;
@@ -12,6 +13,8 @@ const PORT = 3000;
 app.use(express.json());
 
 await dbConnect();
+
+app.use("/books", booksRouter);
 
 //! GLOBAL ERROR HANDLER
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
