@@ -1,4 +1,4 @@
-# 📚 Pirxey - Book Management App
+# 📚 Book Management App
 
 Modern Book Management Application built with **React (TypeScript)** on the frontend and **Node.js (Express + TypeScript)** on the backend, using **MongoDB** as a local persistent database.
 
